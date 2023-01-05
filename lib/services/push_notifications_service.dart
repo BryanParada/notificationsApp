@@ -1,5 +1,7 @@
 //SHA1: 5C:CC:77:91:93:AF:EE:24:F2:D0:78:CA:BC:5E:28:8E:03:F3:1C:17
 
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -7,17 +9,26 @@ class PushNotificationService {
 
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static String? token;
+  static StreamController<String> _messageStream = new StreamController.broadcast();
+  static Stream<String> get messagesStream => _messageStream.stream;
+
 
   static Future _backgroundHandler( RemoteMessage message) async{
-    print('background Handler ${ message.messageId }');
+    // print('background Handler ${ message.messageId }');
+    print(message.data); 
+    _messageStream.add( message.notification?.body ?? 'No title');
   }
   
   static Future _onMessageHandler( RemoteMessage message) async{
-    print('onMessage Handler ${ message.messageId }');
+    //print('onMessage Handler ${ message.messageId }');
+    print(message.data); 
+    _messageStream.add( message.notification?.body ?? 'No title');
   }
   
   static Future _onOpenMessageOpenApp( RemoteMessage message) async{
-    print('onOpenMessageOpenApp Handler ${ message.messageId }');
+    //print('onOpenMessageOpenApp Handler ${ message.messageId }');
+    print(message.data); 
+    _messageStream.add( message.notification?.body ?? 'No title');
   }
 
 
@@ -36,6 +47,10 @@ class PushNotificationService {
 
     //Local notifications 
 
+  }
+
+  static closeStreams() {
+    _messageStream.close();
   }
 
   
