@@ -8,6 +8,18 @@ class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static String? token;
 
+  static Future _backgroundHandler( RemoteMessage message) async{
+    print('background Handler ${ message.messageId }');
+  }
+  
+  static Future _onMessageHandler( RemoteMessage message) async{
+    print('onMessage Handler ${ message.messageId }');
+  }
+  
+  static Future _onOpenMessageOpenApp( RemoteMessage message) async{
+    print('onOpenMessageOpenApp Handler ${ message.messageId }');
+  }
+
 
   static Future initializeApp() async{
 
@@ -15,6 +27,11 @@ class PushNotificationService {
     await Firebase.initializeApp();
     token = await FirebaseMessaging.instance.getToken();
     print('Token: $token');
+
+    // Handlers
+    FirebaseMessaging.onBackgroundMessage( _backgroundHandler );
+    FirebaseMessaging.onMessage.listen( _onMessageHandler );
+    FirebaseMessaging.onMessageOpenedApp.listen( _onOpenMessageOpenApp );
     
 
     //Local notifications 
