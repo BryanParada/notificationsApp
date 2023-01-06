@@ -2,7 +2,7 @@
 
 A Flutter app to show notifications
 
-Video demo: https://youtu.be/exKg1IBo1Eo
+Video demo: https://youtu.be/yXPIGPCAA3E
 
 ## Features  
 - Get notifications from Firebase Cloud Messaging - Postman 
